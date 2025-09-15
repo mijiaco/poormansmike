@@ -66,8 +66,9 @@ async function findPMCCOpportunity(ticker: string) {
   try {
     // Get current stock price
     const quote = await fetchQuote(ticker) as YahooQuote;
-    const underlyingPrice = quote?.price?.regularMarketPrice?.raw || quote?.price?.regularMarketPrice;
-    if (!underlyingPrice || underlyingPrice < 50) return null;
+    const rawPrice = quote?.price?.regularMarketPrice?.raw;
+    const underlyingPrice = typeof rawPrice === 'number' ? rawPrice : quote?.price?.regularMarketPrice;
+    if (!underlyingPrice || typeof underlyingPrice !== 'number' || underlyingPrice < 50) return null;
 
     const { long, short } = getExpiryDates();
     
