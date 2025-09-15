@@ -2,7 +2,8 @@ import { Candidate } from "@/lib/types";
 
 async function fetchCandidates(): Promise<Candidate[]> {
   try {
-    const url = `${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/candidates`;
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const url = `${baseUrl}/api/candidates`;
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) return [];
     return await res.json();
