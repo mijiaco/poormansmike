@@ -1,4 +1,6 @@
-async function fetchCandidates() {
+import { Candidate } from "@/lib/types";
+
+async function fetchCandidates(): Promise<Candidate[]> {
   try {
     const url = `${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/candidates`;
     const res = await fetch(url, { cache: "no-store" });
@@ -67,7 +69,7 @@ export default async function IdeasPage() {
                   <td className="py-3"></td>
                 </tr>
               ) : (
-                candidates.map((c: any, index: number) => (
+                candidates.map((c: Candidate, index: number) => (
                   <tr key={c.id || index} className="border-t border-white/10">
                     <td className="py-3">{c.ticker || 'N/A'}</td>
                     <td className="py-3">{c.underlying_price || ''}</td>
