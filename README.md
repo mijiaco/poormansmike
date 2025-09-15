@@ -1,8 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+PMCC App — Poor Man’s Covered Call dashboard built with Next.js.
 
 ## Getting Started
 
-First, run the development server:
+Environment variables:
+
+Create a `.env.local` in project root:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+RAPIDAPI_KEY=
+```
+
+Run the development server:
 
 ```bash
 npm run dev
@@ -16,7 +26,27 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Key folders: `src/app`, `src/lib`.
+
+## Supabase setup
+
+1. Create a Supabase project and copy the Project URL and anon key.
+2. In the SQL editor, run the SQL in `supabase/schema.sql` and `supabase/policies.sql`.
+3. Set env vars in `.env.local`:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=your-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+RAPIDAPI_KEY=your-rapidapi-key
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+
+## Development
+
+```bash
+npm run dev
+```
+
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
