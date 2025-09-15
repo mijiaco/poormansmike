@@ -1,15 +1,8 @@
-import { Candidate } from "@/lib/types";
 import Link from "next/link";
 
-async function fetchCandidates(): Promise<Candidate[]> {
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/api/candidates`;
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) return [];
-  return (await res.json()) as Candidate[];
-}
-
 export default async function IdeasPage() {
-  const candidates: Candidate[] = await fetchCandidates();
+  // Temporarily disable data fetching to isolate the error
+  const candidates: any[] = [];
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
