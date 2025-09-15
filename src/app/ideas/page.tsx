@@ -36,6 +36,8 @@ export default async function IdeasPage() {
       </div>
       <div className="text-sm muted">
         Debug: Found {candidates.length} candidates
+        <br />
+        Raw data: {JSON.stringify(candidates.slice(0, 2))}
       </div>
       <div className="glass rounded-2xl p-6">
         <div className="overflow-x-auto">
