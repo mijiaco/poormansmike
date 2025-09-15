@@ -38,7 +38,7 @@ function getExpiryDates() {
 async function findPMCCOpportunity(ticker: string) {
   try {
     // Get current stock price
-    const quote = await fetchQuote(ticker);
+    const quote = await fetchQuote(ticker) as any;
     const underlyingPrice = quote?.price?.regularMarketPrice?.raw || quote?.price?.regularMarketPrice;
     if (!underlyingPrice || underlyingPrice < 50) return null;
 
@@ -50,8 +50,8 @@ async function findPMCCOpportunity(ticker: string) {
       fetchOptionChain(ticker, short)
     ]);
 
-    const longCalls = longChain?.optionChain?.result?.[0]?.options?.[0]?.calls || [];
-    const shortCalls = shortChain?.optionChain?.result?.[0]?.options?.[0]?.calls || [];
+    const longCalls = (longChain as any)?.optionChain?.result?.[0]?.options?.[0]?.calls || [];
+    const shortCalls = (shortChain as any)?.optionChain?.result?.[0]?.options?.[0]?.calls || [];
 
     // Find best LEAP (long call with delta >= 0.75)
     const leap = longCalls
