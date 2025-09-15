@@ -14,10 +14,21 @@ export async function GET(request: Request) {
 
     console.log("API called with limit:", parsed.limit);
     console.log("Supabase configured:", !!supabase);
+    console.log("Environment check:", {
+      hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+      hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      url: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 20) + "..."
+    });
 
     if (!supabase) {
       console.log("Supabase not configured, returning empty array");
-      return NextResponse.json([], { status: 200 });
+      return NextResponse.json({ 
+        error: "Supabase not configured", 
+        env: {
+          hasUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+          hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        }
+      }, { status: 200 });
     }
 
     console.log("Fetching candidates from Supabase...");
