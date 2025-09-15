@@ -13,7 +13,8 @@ export async function GET() {
     if (!safe.success) return NextResponse.json([]);
     return NextResponse.json(safe.data);
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+    console.error("/api/trades error:", err);
+    return NextResponse.json([], { status: 200, headers: { "x-error": String((err as Error).message) } });
   }
 }
 

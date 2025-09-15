@@ -28,7 +28,9 @@ export async function GET(request: Request) {
     if (!safe.success) return NextResponse.json([], { status: 200 });
     return NextResponse.json(safe.data);
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+    console.error("/api/candidates error:", err);
+    // Fail-soft: treat as no data so UI still renders
+    return NextResponse.json([], { status: 200, headers: { "x-error": String((err as Error).message) } });
   }
 }
 
