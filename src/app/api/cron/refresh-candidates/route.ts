@@ -3,6 +3,33 @@ import { supabase } from "@/lib/supabase";
 import { fetchQuote, fetchOptionChain } from "@/lib/market";
 import { calculateMonthlyYield, annualizedSimple, annualizedCompounded } from "@/lib/formulas";
 
+// Yahoo Finance API response types
+interface YahooQuote {
+  price?: {
+    regularMarketPrice?: {
+      raw?: number;
+    };
+  };
+}
+
+interface YahooOption {
+  strike: number;
+  delta: number;
+  bid: number;
+  ask: number;
+  lastPrice: number;
+}
+
+interface YahooOptionChain {
+  optionChain?: {
+    result?: Array<{
+      options?: Array<{
+        calls?: YahooOption[];
+      }>;
+    }>;
+  };
+}
+
 // S&P 500 top tickers for PMCC scanning
 const SP500_TICKERS = [
   "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "META", "TSLA", "BRK-B", "UNH", "JNJ",
@@ -38,7 +65,7 @@ function getExpiryDates() {
 async function findPMCCOpportunity(ticker: string) {
   try {
     // Get current stock price
-    const quote = await fetchQuote(ticker) as any;
+    const quote = await fetchQuote(ticker) as YahooQuote;
     const underlyingPrice = quote?.price?.regularMarketPrice?.raw || quote?.price?.regularMarketPrice;
     if (!underlyingPrice || underlyingPrice < 50) return null;
 
@@ -50,8 +77,8 @@ async function findPMCCOpportunity(ticker: string) {
       fetchOptionChain(ticker, short)
     ]);
 
-    const longCalls = (longChain as any)?.optionChain?.result?.[0]?.options?.[0]?.calls || [];
-    const shortCalls = (shortChain as any)?.optionChain?.result?.[0]?.options?.[0]?.calls || [];
+    const longCalls = (longChain as YahooOptionChain)?.optionChain?.result?.[0]?.options?.[0]?.calls || [];
+    const shortCalls = (shortChain as YahooOptionChain)?.optionChain?.result?.[0]?.options?.[0]?.calls || [];
 
     // Find best LEAP (long call with delta >= 0.75)
     const leap = longCalls
