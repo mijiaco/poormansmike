@@ -15,7 +15,18 @@ export default async function IdeasPage() {
   
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold text-white">Ideas</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold text-white">Ideas</h1>
+        <div className="flex gap-3">
+          <a 
+            href="/api/cron/refresh-candidates" 
+            className="px-4 py-2 rounded-md bg-white/10 hover:bg-white/20 text-white text-sm"
+            target="_blank"
+          >
+            Refresh Ideas
+          </a>
+        </div>
+      </div>
       <div className="glass rounded-2xl p-6">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
