@@ -23,7 +23,14 @@ export default async function IdeasPage() {
             className="px-4 py-2 rounded-md bg-white/10 hover:bg-white/20 text-white text-sm"
             target="_blank"
           >
-            Refresh Ideas
+            🔄 Refresh Live Data
+          </a>
+          <a 
+            href="/api/candidates" 
+            className="px-4 py-2 rounded-md bg-white/10 hover:bg-white/20 text-white text-sm"
+            target="_blank"
+          >
+            📊 View Raw Data
           </a>
         </div>
       </div>
