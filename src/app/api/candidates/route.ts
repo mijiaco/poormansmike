@@ -12,6 +12,9 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const parsed = QuerySchema.parse({ limit: searchParams.get("limit") ?? undefined });
 
+    console.log("API called with limit:", parsed.limit);
+    console.log("Supabase configured:", !!supabase);
+
     if (!supabase) {
       console.log("Supabase not configured, returning empty array");
       return NextResponse.json([], { status: 200 });
@@ -26,25 +29,19 @@ export async function GET(request: Request) {
 
     if (error) {
       console.error("Supabase error:", error);
-      // If table doesn't exist, return empty array
-      if (error.code === 'PGRST116' || error.message.includes('relation') || error.message.includes('does not exist')) {
-        console.log("Candidates table doesn't exist yet, returning empty array");
-        return NextResponse.json([], { status: 200 });
-      }
-      throw error;
+      return NextResponse.json({ error: error.message, details: error }, { status: 500 });
     }
 
     console.log(`Found ${data?.length || 0} candidates`);
     const safe = z.array(CandidateSchema).safeParse(data);
     if (!safe.success) {
-      console.log("Data validation failed, returning empty array");
-      return NextResponse.json([], { status: 200 });
+      console.log("Data validation failed:", safe.error);
+      return NextResponse.json({ error: "Data validation failed", details: safe.error }, { status: 500 });
     }
     return NextResponse.json(safe.data);
   } catch (err) {
     console.error("/api/candidates error:", err);
-    // Fail-soft: treat as no data so UI still renders
-    return NextResponse.json([], { status: 200, headers: { "x-error": String((err as Error).message) } });
+    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
   }
 }
 
