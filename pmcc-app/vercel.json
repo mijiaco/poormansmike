@@ -1,0 +1,9 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/refresh-candidates",
+      "schedule": "45 9 * * 1-5"
+    }
+  ]
+}
+
