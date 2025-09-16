@@ -37,13 +37,6 @@ export default async function IdeasPage() {
           </a>
         </div>
       </div>
-      <div className="text-sm muted">
-        Debug: Found {candidates.length} candidates
-        <br />
-        Raw data: {JSON.stringify(candidates.slice(0, 2))}
-        <br />
-        Last updated: {new Date().toISOString()}
-      </div>
       <div className="glass rounded-2xl p-6">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
